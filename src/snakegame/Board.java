@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -13,14 +12,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-public class Board extends JPanel implements ActionListener {
+public class Board extends JPanel implements ActionListener{
     
     private final int B_WIDTH = 300;
     private final int B_HEIGHT = 300;
@@ -47,8 +42,10 @@ public class Board extends JPanel implements ActionListener {
     private Image apple;
     private Image head;
     
+    private int hs;
+    
     public Board() {
-        getConnection("INSERT INTO snakescores VALUES (asd, 15)");
+        
         initBoard();
     }
     
@@ -120,12 +117,21 @@ public class Board extends JPanel implements ActionListener {
     }
     
     private void gameOver(Graphics g) {
+        
+        String fileName = "scores.txt";
+        
+        if (hs < dots - 3) {
+            hs = dots - 3;
+        }
+        
         String msg = "Game Over";
         String msg2 = "Score: " + (dots - 3);
-        String msg3 = "Press Enter to Restart";
+        String msg3 = "Highest Score: " + hs;
+        String msg4 = "Press Enter to Restart";
         Font small = new Font("Helvetica", Font.BOLD, 14);
         Font small2 = new Font("Helvetica", Font.BOLD, 12);
         FontMetrics metr = getFontMetrics(small);
+        
         
         g.setColor(Color.white);
         g.setFont(small);
@@ -137,7 +143,11 @@ public class Board extends JPanel implements ActionListener {
         
         g.setColor(Color.white);
         g.setFont(small2);
-        g.drawString(msg3, (B_WIDTH - metr.stringWidth(msg3)) / 2 + 15, B_HEIGHT / 2 + 15);
+        g.drawString(msg3, (B_WIDTH - metr.stringWidth(msg3)) / 2 + 10, B_HEIGHT / 2 + 15);
+        
+        g.setColor(Color.white);
+        g.setFont(small2);
+        g.drawString(msg4, (B_WIDTH - metr.stringWidth(msg4)) / 2 + 15, B_HEIGHT / 2 + 30);
     }
     
     private void checkApple() {
@@ -270,52 +280,6 @@ public class Board extends JPanel implements ActionListener {
                     initBoard();
                 }
             }
-        }
-    }
-    
-    /*public void askData(String name) {
-        try (Scanner reader = new Scanner(System.in)) {
-            System.out.println("Enter your username: ");
-            name = reader.next();
-        }
-    }
-    
-    public void insertData(String name, int score) throws SQLException {
-        Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/if17_kodakevi?user=if17&password=if17");
-        PreparedStatement st = cn.prepareStatement("INSERT INTO snakescores VALUES(?, ?)");
-        st.setString(1, name);
-        st.setDouble(2, score);
-        st.executeUpdate();
-    }
-    
-    public void showData(String username2, int score2) throws SQLException {
-        Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/if17_kodakevi?user=if17&password=if17");
-        PreparedStatement st = cn.prepareStatement("SELECT username, score FROM snakescores");
-        st.setString(1, username2);
-        st.setDouble(2, score2);
-        ResultSet rs = st.executeQuery();
-        String nametext = " ";
-        int scoretext = 0;
-        while (rs.next()) {
-            nametext += rs.getString("username2");
-            scoretext += rs.getDouble("score2");
-        }
-    }*/
-    
-    public Connection getConnection(String query) {
-        
-        Connection con = null;
-        Statement st = null;
-        
-        try {
-            con = DriverManager.getConnection("jdbc:mysql://localhost/if17_kodakevi?user=if17&password=if17");
-            st = con.createStatement();
-            st.executeUpdate(query);
-            JOptionPane.showMessageDialog(null, "Connected");
-            return con;
-        } catch(HeadlessException | SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
-            return null;
         }
     }
 }
