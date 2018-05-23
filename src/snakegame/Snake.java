@@ -1,7 +1,6 @@
 package snakegame;
 
-import java.sql.*;
-import java.awt.EventQueue;
+//import java.awt.EventQueue;
 import javax.swing.JFrame;
 
 public class Snake extends JFrame {

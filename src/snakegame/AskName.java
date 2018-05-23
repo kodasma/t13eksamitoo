@@ -5,7 +5,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
+//import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,10 +14,12 @@ import javax.swing.SwingUtilities;
 
 public class AskName extends JFrame {
     
-    public ArrayList<String> names = new ArrayList<>();
+    String userName = "";
     
     JTextField textField = new JTextField(20);
     JButton button = new JButton("OK");
+    
+    
     
     public AskName() {
         super("Insert username");
@@ -27,13 +29,14 @@ public class AskName extends JFrame {
             setVisible(false);
             dispose();
             String content = textField.getText();
-            names.add(content);
+            userName = content;
+            
             EventQueue.invokeLater(() -> {
                 JFrame ex = new snakegame.Snake();
                 ex.setVisible(true);
             });
         });
-
+        
         textField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent event) {
@@ -50,7 +53,8 @@ public class AskName extends JFrame {
             setVisible(false);
             dispose();
             String content = textField.getText();
-            names.add(content);
+            userName = content;
+            
             EventQueue.invokeLater(() -> {
                 JFrame ex = new snakegame.Snake();
                 ex.setVisible(true);
